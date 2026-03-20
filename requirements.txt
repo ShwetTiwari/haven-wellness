@@ -11,10 +11,10 @@ textblob==0.18.0
 vaderSentiment==3.3.2
 librosa==0.10.2
 soundfile==0.12.1
-opencv-python==4.9.0.80
+opencv-python-headless==4.9.0.80
 Pillow==10.3.0
-deepface==0.0.93
-tf-keras
+# deepface==0.0.93
+# tf-keras
 tqdm==4.66.4
 requests==2.32.2
 anthropic==0.28.0
