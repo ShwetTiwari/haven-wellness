@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Haven — Your wellness companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/css/haven.css"/>
+<style>
+/* Permission overlay */
+#perm-overlay{position:fixed;inset:0;background:rgba(15,20,25,0.85);z-index:500;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.perm-box{background:#fff;border-radius:24px;padding:40px 36px;max-width:420px;
+  width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.2);}
+.perm-icon{font-size:48px;margin-bottom:16px;}
+.perm-title{font-size:22px;font-weight:800;color:#1b4332;margin-bottom:10px;}
+.perm-desc{font-size:14px;color:#52796f;line-height:1.7;margin-bottom:24px;}
+.perm-items{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;text-align:left;}
+.perm-item{display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:#f0faf4;border-radius:12px;font-size:13px;color:#2d6a4f;}
+.perm-item-icon{font-size:20px;flex-shrink:0;}
+.perm-note{font-size:11px;color:#84a98c;margin-top:16px;line-height:1.6;}
+
+/* Live indicators */
+.live-bar{display:flex;align-items:center;gap:12px;padding:8px 14px;
+  background:rgba(64,145,108,0.08);border-radius:10px;
+  border:1px solid rgba(64,145,108,0.2);margin-bottom:12px;flex-wrap:wrap;}
+.live-ind{display:none;align-items:center;gap:6px;font-size:11px;color:#2d6a4f;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#40916c;
+  animation:vp 1.2s infinite;}
+.capture-stat{font-size:10px;color:#84a98c;margin-left:auto;}
+
+/* Modality tags on result */
+.mod-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.mod-tag{font-size:11px;padding:4px 12px;border-radius:20px;font-weight:500;}
+.mod-tag.on{background:rgba(64,145,108,0.12);color:#2d6a4f;border:1px solid rgba(64,145,108,0.3);}
+.mod-tag.off{background:#f0faf4;color:#84a98c;border:1px solid rgba(64,145,108,0.1);}
+</style>
+</head>
+<body>
+
+<!-- Permission overlay -->
+<div id="perm-overlay">
+  <div class="perm-box">
+    <div class="perm-icon">🤖</div>
+    <div class="perm-title">Hey, I'm Remi!</div>
+    <div class="perm-desc">For the best experience, I'd love to see and hear you. This helps me understand you better — everything stays private and is never stored.</div>
+    <div class="perm-items">
+      <div class="perm-item"><span class="perm-item-icon">🎙️</span><div><strong>Microphone</strong> — so I can hear your voice and detect speech patterns</div></div>
+      <div class="perm-item"><span class="perm-item-icon">📷</span><div><strong>Camera</strong> — so I can read facial expressions and non-verbal cues</div></div>
+    </div>
+    <div style="font-size:12px;color:#52796f;">Your browser will ask for permission now. Both are optional — Haven works without them too.</div>
+    <div class="perm-note">🔒 Audio and video are processed locally. Nothing is recorded permanently.</div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="hnav">
+  <div class="hlogo" onclick="goTo(0)">
+    <div class="hlogo-mark">🌿</div>
+    <span class="hlogo-txt">Haven</span>
+  </div>
+  <button class="vnav" onclick="toggleVoice()">
+    <span class="vdot on"></span>
+    <span id="vlabel">Voice on</span>
+  </button>
+</nav>
+
+<!-- Nav dots -->
+<div class="ndots">
+  <button class="ndot on"></button>
+  <button class="ndot"></button>
+  <button class="ndot"></button>
+  <button class="ndot"></button>
+</div>
+
+<!-- Passive mood orb -->
+<div class="orb-wrap">
+  <div class="orb calm"></div>
+  <span class="orb-label">ambient</span>
+</div>
+
+
+<!-- SECTION 1: HERO -->
+<section class="sec vis" id="s-hero">
+  <div class="particles"></div>
+  <div class="hero-c">
+    <div class="remi-c"><div class="remi-b">🤖</div></div>
+    <p class="eyebrow">Meet Remi · Your wellness companion</p>
+    <h1 class="h1">Your mind deserves<br/>a <span>safe place</span> too</h1>
+    <p class="hsub">Haven is a gentle space to check in with yourself. Chat with Remi, breathe, laugh a little — and feel genuinely heard.</p>
+    <div class="hcta">
+      <button class="btn btn-p" onclick="startChat()">Talk to Remi</button>
+      <button class="btn btn-s" onclick="goTo(1)">Explore Haven</button>
+    </div>
+    <div class="stats">
+      <div><div class="stat-n" style="color:var(--gd)">322M+</div><div class="stat-l">people experience low mood globally</div></div>
+      <div><div class="stat-n" style="color:var(--sm)">1 in 4</div><div class="stat-l">people feel this way at some point</div></div>
+      <div><div class="stat-n" style="color:var(--gm)">You</div><div class="stat-l">are not alone in this</div></div>
+    </div>
+  </div>
+  <button class="btn btn-g btn-sm" style="position:absolute;bottom:28px;" onclick="goTo(1)">Explore ↓</button>
+</section>
+
+
+<!-- SECTION 2: WELLNESS -->
+<section class="sec" id="s-well">
+  <div class="mc">
+    <div class="tc" style="margin-bottom:36px;">
+      <p class="eyebrow">Wellness tools</p>
+      <h2 class="stitle">A little goes a long way</h2>
+      <p class="ssub">Small moments of care add up. Pick what feels right today.</p>
+    </div>
+    <div class="wgrid">
+      <div class="wcard">
+        <div class="wci">🌬️</div><div class="wct">Box breathing</div>
+        <div class="wcd">4 counts in · 4 hold · 6 out. Calms your nervous system in under 2 minutes.</div>
+        <div class="bring exh" id="bring"><span id="btxt">Ready</span></div>
+        <button class="btn btn-g btn-sm mt2" id="bbtn" onclick="startBreathing()">Start</button>
+      </div>
+      <div class="wcard">
+        <div class="wci">💫</div><div class="wct">Daily affirmation</div>
+        <div class="wcd">Tap the card whenever you need a reminder of your worth.</div>
+        <div class="aff-card" id="aff-txt" onclick="loadAffirmation()" style="transition:opacity 0.28s;min-height:80px;">Loading...</div>
+        <div class="aff-sub">Tap for a new affirmation</div>
+      </div>
+      <div class="wcard">
+        <div class="wci">😄</div><div class="wct">Today's vibe check</div>
+        <div class="wcd">Laughter is genuinely good medicine. No cap.</div>
+        <div class="mbox" id="meme-c"><div class="mt">loading...</div><div class="mb">one moment</div></div>
+        <button class="btn btn-g btn-sm mt2" onclick="loadMeme()">Next one →</button>
+      </div>
+      <div class="wcard">
+        <div class="wci">🎵</div><div class="wct">Music for your mood</div>
+        <div class="wcd">Pick how you want to feel and we'll take you there.</div>
+        <div class="mbtns">
+          <button class="mbtn" data-mood="calm"  onclick="selectMood('calm')">Calm</button>
+          <button class="mbtn" data-mood="focus" onclick="selectMood('focus')">Focus</button>
+          <button class="mbtn" data-mood="happy" onclick="selectMood('happy')">Happy</button>
+          <button class="mbtn" data-mood="sleep" onclick="selectMood('sleep')">Sleep</button>
+        </div>
+        <a id="mlink" class="btn btn-p btn-sm mt2" href="#" target="_blank" rel="noopener" style="display:none;text-decoration:none;">Open playlist ↗</a>
+      </div>
+      <div class="wcard">
+        <div class="wci">📖</div><div class="wct">Gratitude journal</div>
+        <div class="wcd">Write one thing you're grateful for today, however small.</div>
+        <textarea class="ginp" id="ginp" placeholder="Today I'm grateful for..." rows="3"></textarea>
+        <div class="gsav" id="gsav">✓ Saved</div>
+        <button class="btn btn-g btn-sm mt2" onclick="saveGratitude()">Save it</button>
+      </div>
+      <div class="wcard" style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="wci">🧘</div><div class="wct">Sound bath</div>
+          <div class="wcd">Close your eyes and let these frequencies do the work.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+          <a class="btn btn-g btn-sm" href="https://www.youtube.com/watch?v=1ZYbU82GVz4" target="_blank" rel="noopener">5 min</a>
+          <a class="btn btn-g btn-sm" href="https://www.youtube.com/watch?v=lE6RYpe9IT0" target="_blank" rel="noopener">10 min</a>
+          <a class="btn btn-g btn-sm" href="https://www.youtube.com/watch?v=77ZozI0rw7w" target="_blank" rel="noopener">30 min</a>
+        </div>
+      </div>
+    </div>
+    <div class="qbanner"><div class="qt" id="qt">Loading...</div><div class="qa" id="qa"></div></div>
+    <div class="tc mt6"><button class="btn btn-p" onclick="startChat()">Ready to chat with Remi?</button></div>
+  </div>
+</section>
+
+
+<!-- SECTION 3: CHAT -->
+<section class="sec" id="s-chat">
+  <div class="tc" style="margin-bottom:18px;">
+    <p class="eyebrow">Your companion</p>
+    <h2 class="stitle" style="font-size:clamp(20px,4vw,32px);">Chat with Remi</h2>
+    <p style="font-size:13px;color:var(--tmu);">Just talk naturally — Remi listens, sees, and genuinely cares.</p>
+  </div>
+
+  <div class="cwrap">
+    <div class="cbox">
+      <div class="chead">
+        <div class="rav">🤖</div>
+        <div>
+          <div class="rn">Remi</div>
+          <div class="rs"><span class="sdot"></span>Here with you</div>
+        </div>
+        <div class="phdots" title="Conversation phases">
+          <div class="phd act"></div><div class="phd"></div><div class="phd"></div><div class="phd"></div>
+        </div>
+      </div>
+
+      <div class="cmsgs" id="cmsgs">
+        <div style="text-align:center;padding:32px 16px;">
+          <div style="font-size:32px;margin-bottom:9px;">🤖</div>
+          <div style="font-size:13px;color:var(--tmu);line-height:1.7;">
+            Click below to start — Remi will ask for mic and camera access<br/>for the full experience. Both are optional.
+          </div>
+          <button class="btn btn-p btn-sm" style="margin-top:14px;" onclick="startChat()">Start conversation</button>
+        </div>
+      </div>
+
+      <div class="cinrow">
+        <div class="cin-top">
+          <textarea class="cin" id="cin" placeholder="Type or speak your message..." rows="1"></textarea>
+          <button class="sbtn" id="sbtn" onclick="sendMsg()">↑</button>
+        </div>
+        <div class="cin-tools">
+          <button class="tool-btn" id="stt-btn" onclick="toggleSTT()">🎙️ <span>Speak</span></button>
+          <span class="stt-status" id="stt-st"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="cside">
+      <!-- Live capture status -->
+      <div class="sc">
+        <div class="st">Live capture</div>
+        <div class="live-bar">
+          <div class="live-ind" id="mic-active"><span class="live-dot"></span>Mic active</div>
+          <div class="live-ind" id="cam-active"><span class="live-dot"></span>Camera active</div>
+          <div style="font-size:10px;color:var(--tl);" id="cam-active-off">Start chat to enable</div>
+        </div>
+        <div style="font-size:10px;color:var(--tl);" id="audio-indicator">0 audio segments captured</div>
+        <div style="font-size:10px;color:var(--tl);margin-top:3px;" id="frame-indicator">0 frames captured</div>
+      </div>
+
+      <!-- Live webcam preview -->
+      <div class="sc">
+        <div class="st">Camera preview</div>
+        <div class="camb">
+          <video id="cv" autoplay muted playsinline></video>
+          <div class="coff" id="cov"><span>📷</span><span>Camera off</span></div>
+          <div class="crec" id="crec-ind"><span class="rdot"></span><span>REC</span></div>
+        </div>
+        <div class="cst" id="cst">Starts automatically when you begin chatting</div>
+      </div>
+
+      <!-- Waveform -->
+      <div class="sc">
+        <div class="st">Voice waveform</div>
+        <div class="wf" style="height:40px;"><canvas id="wfc"></canvas></div>
+        <div style="font-size:9px;color:var(--tl);margin-top:5px;">VAD — records only when you speak</div>
+      </div>
+
+      <div class="priv">🔒 All processing is local. Audio and video are never stored permanently or sent to third parties.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 4: RESULT -->
+<section class="sec" id="s-res">
+  <div class="rwrap">
+    <p class="eyebrow" style="margin-bottom:14px;">Your wellness card</p>
+    <div class="vring" style="--pct:65%;">
+      <div class="vinn"><div class="vnum" id="vnum">65</div><div class="vlbl">vibe score</div></div>
+    </div>
+    <h2 class="wls" id="wls">Balancing</h2>
+    <p class="wlm" id="wlm">You're navigating a mixed season. That takes real strength.</p>
+    <!-- Modality contribution row -->
+    <div class="mod-row" id="modality-row">
+      <span class="mod-tag off">💬 text —</span>
+      <span class="mod-tag off">🎙️ audio —</span>
+      <span class="mod-tag off">📷 video —</span>
+    </div>
+    <div class="tgrid" id="tc">
+      <div class="tcard"><span class="tico">🌿</span><span>Loading your personalised tips...</span></div>
+    </div>
+    <div class="rbtns">
+      <button class="btn btn-p" onclick="startChat()">Chat with Remi again</button>
+      <button class="btn btn-s" onclick="goTo(1)">Wellness tools</button>
+    </div>
+    <p class="rnote">Haven is a supportive companion, not a clinical service. If you're going through a difficult time, please speak with someone you trust or a mental health professional.</p>
+  </div>
+</section>
+
+<script src="/static/js/haven.js"></script>
+</body>
+</html>

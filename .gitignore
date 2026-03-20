@@ -1,0 +1,32 @@
+# Secrets - NEVER commit these
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+
+# Uploaded files (temp, not needed in deployment)
+data/
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Keep these IN git (needed for deployment):
+# models/saved/ensemble_model.pkl  ← DO NOT ignore
+# models/saved/feature_extractor.pkl  ← DO NOT ignore
+# frontend/static/css/haven.css
+# frontend/static/js/haven.js
+# frontend/templates/index.html
